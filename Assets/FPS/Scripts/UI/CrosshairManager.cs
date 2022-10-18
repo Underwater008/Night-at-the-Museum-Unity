@@ -58,6 +58,8 @@ namespace Unity.FPS.UI
             m_CrosshairRectTransform.sizeDelta = Mathf.Lerp(m_CrosshairRectTransform.sizeDelta.x,
                 m_CurrentCrosshair.CrosshairSize,
                 Time.deltaTime * CrosshairUpdateshrpness) * Vector2.one;
+
+
         }
 
         void OnWeaponChanged(WeaponController newWeapon)

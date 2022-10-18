@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
 
 namespace Unity.FPS.Game
 {
@@ -27,6 +28,22 @@ namespace Unity.FPS.Game
         {
             CurrentHealth = MaxHealth;
         }
+
+        public void StartLerpTOMacHealth()
+        {
+            StartCoroutine(LerpToMaxHealth());
+        }
+
+        IEnumerator LerpToMaxHealth()
+        {
+            while (CurrentHealth<MaxHealth)
+            {
+                yield return new WaitForSeconds(0.1f);
+                Heal(3);
+            }
+            m_IsDead = false;
+        }
+      
 
         public void Heal(float healAmount)
         {

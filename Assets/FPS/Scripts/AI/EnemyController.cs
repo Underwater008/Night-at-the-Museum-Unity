@@ -237,6 +237,9 @@ namespace Unity.FPS.AI
                 m_EyeRendererData.Renderer.SetPropertyBlock(m_EyeColorMaterialPropertyBlock,
                     m_EyeRendererData.MaterialIndex);
             }
+            //  PatrolPath.ReversePath();
+            NavMeshAgent.speed = 3.5f;
+          
         }
 
         void OnDetectedTarget()
@@ -250,6 +253,8 @@ namespace Unity.FPS.AI
                 m_EyeRendererData.Renderer.SetPropertyBlock(m_EyeColorMaterialPropertyBlock,
                     m_EyeRendererData.MaterialIndex);
             }
+            PatrolPath.ReversePath();
+            NavMeshAgent.speed = 7f;
         }
 
         public void OrientTowards(Vector3 lookPosition)
@@ -359,21 +364,31 @@ namespace Unity.FPS.AI
 
         void OnDie()
         {
-            // spawn a particle system when dying
-            var vfx = Instantiate(DeathVfx, DeathVfxSpawnPoint.position, Quaternion.identity);
-            Destroy(vfx, 5f);
+            NavMeshAgent.enabled = false;
+            //Debug.Log("Died");
+            m_Health.StartLerpTOMacHealth();
+            Invoke("WaitForSecond", 3f);
+            //// spawn a particle system when dying
+            //var vfx = Instantiate(DeathVfx, DeathVfxSpawnPoint.position, Quaternion.identity);
+            //Destroy(vfx, 5f);
 
-            // tells the game flow manager to handle the enemy destuction
-            m_EnemyManager.UnregisterEnemy(this);
+            //// tells the game flow manager to handle the enemy destuction
+            //m_EnemyManager.UnregisterEnemy(this);
 
-            // loot an object
-            if (TryDropItem())
-            {
-                Instantiate(LootPrefab, transform.position, Quaternion.identity);
-            }
+            //// loot an object
+            //if (TryDropItem())
+            //{
+            //    Instantiate(LootPrefab, transform.position, Quaternion.identity);
+            //}
 
-            // this will call the OnDestroy function
-            Destroy(gameObject, DeathDuration);
+            //// this will call the OnDestroy function
+            //Destroy(gameObject, DeathDuration);
+        }
+
+        void WaitForSecond()
+        {
+            NavMeshAgent.enabled = true;
+            //Debug.Log("keep moving");
         }
 
         void OnDrawGizmosSelected()

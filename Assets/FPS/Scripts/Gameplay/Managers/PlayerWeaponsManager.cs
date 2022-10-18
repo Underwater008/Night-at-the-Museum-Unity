@@ -2,6 +2,10 @@
 using Unity.FPS.Game;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
+using UnityEngine.AI;
+
+using DG.Tweening;
 
 namespace Unity.FPS.Gameplay
 {
@@ -92,6 +96,7 @@ namespace Unity.FPS.Gameplay
         float m_TimeStartedWeaponSwitch;
         WeaponSwitchState m_WeaponSwitchState;
         int m_WeaponSwitchNewWeaponIndex;
+        private float ekeyTime;
 
         void Start()
         {
@@ -184,11 +189,46 @@ namespace Unity.FPS.Gameplay
                     if (hit.collider.GetComponentInParent<Health>() != null)
                     {
                         IsPointingAtEnemy = true;
+                       
+                    }
+                }
+
+                if (Physics.Raycast(WeaponCamera.transform.position, WeaponCamera.transform.forward, out RaycastHit otherHit,
+    1000, -1, QueryTriggerInteraction.Ignore))
+                {
+                    if (hit.collider.GetComponentInParent<Health>() != null)
+                    {
+                        if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            sld.gameObject.SetActive(true);
+                        }
+                        if (Input.GetKey(KeyCode.E))
+                        {
+                            //sld.enabled = true;
+                            ekeyTime += Time.deltaTime;
+                            sld.value = ekeyTime / 2;
+                            if (ekeyTime >= 2f)
+                            {
+                                hit.collider.GetComponentInParent<NavMeshAgent>().enabled = false;
+                                hit.collider.transform.parent.SetParent(Camera.main.transform);
+                                hit.collider.GetComponentInParent<BoxCollider>().enabled = true;
+                                hit.collider.GetComponentInParent<Rigidbody>().useGravity = false;
+                                ekeyTime = 0f;
+                            }
+                        }
+                        if (Input.GetKeyUp(KeyCode.E))
+                        {
+                            sld.gameObject.SetActive(false);
+                            sld.value = 0f;
+                        }
+
                     }
                 }
             }
         }
 
+
+        public Slider sld;
 
         // Update various animated features in LateUpdate because it needs to override the animated arm position
         void LateUpdate()

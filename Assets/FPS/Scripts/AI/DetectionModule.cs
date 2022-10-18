@@ -76,6 +76,8 @@ namespace Unity.FPS.AI
                                 closestValidHit = hit;
                                 foundValidHit = true;
                             }
+
+
                         }
 
                         if (foundValidHit)
@@ -108,6 +110,7 @@ namespace Unity.FPS.AI
             if (HadKnownTarget &&
                 KnownDetectedTarget == null)
             {
+                //print("1111");
                 OnLostTarget();
             }
 

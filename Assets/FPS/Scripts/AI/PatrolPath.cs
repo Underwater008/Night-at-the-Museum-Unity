@@ -10,6 +10,7 @@ namespace Unity.FPS.AI
 
         [Tooltip("The Nodes making up the path")]
         public List<Transform> PathNodes = new List<Transform>();
+        
 
         void Start()
         {
@@ -18,6 +19,15 @@ namespace Unity.FPS.AI
                 enemy.PatrolPath = this;
             }
         }
+
+        public void ReversePath()
+        {
+            PathNodes.Reverse();
+            Debug.Log("path reversed");
+
+        }
+
+
 
         public float GetDistanceToNode(Vector3 origin, int destinationNodeIndex)
         {
@@ -36,6 +46,7 @@ namespace Unity.FPS.AI
             {
                 return Vector3.zero;
             }
+            
 
             return PathNodes[nodeIndex].position;
         }

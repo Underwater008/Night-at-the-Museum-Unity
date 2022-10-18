@@ -28,7 +28,7 @@ namespace Unity.FPS.AI
         [Header("Sound")] public AudioClip MovementSound;
         public MinMaxFloat PitchDistortionMovementSpeed;
 
-        public AIState AiState { get; private set; }
+        public AIState AiState { get; set; }
         EnemyController m_EnemyController;
         AudioSource m_AudioSource;
 
@@ -80,11 +80,12 @@ namespace Unity.FPS.AI
             switch (AiState)
             {
                 case AIState.Follow:
-                    // Transition to attack when there is a line of sight to the target
+                    // Transition to rever patrol when there is a line of sight to the target
                     if (m_EnemyController.IsSeeingTarget && m_EnemyController.IsTargetInAttackRange)
                     {
-                        AiState = AIState.Attack;
-                        m_EnemyController.SetNavDestination(transform.position);
+                        AiState = AIState.Patrol;
+
+                       m_EnemyController.SetNavDestination(transform.position);
                     }
 
                     break;
@@ -109,24 +110,24 @@ namespace Unity.FPS.AI
                     m_EnemyController.SetNavDestination(m_EnemyController.GetDestinationOnPath());
                     break;
                 case AIState.Follow:
-                    m_EnemyController.SetNavDestination(m_EnemyController.KnownDetectedTarget.transform.position);
-                    m_EnemyController.OrientTowards(m_EnemyController.KnownDetectedTarget.transform.position);
-                    m_EnemyController.OrientWeaponsTowards(m_EnemyController.KnownDetectedTarget.transform.position);
+                    //m_EnemyController.SetNavDestination(m_EnemyController.KnownDetectedTarget.transform.position);
+                    //m_EnemyController.OrientTowards(m_EnemyController.KnownDetectedTarget.transform.position);
+                    //m_EnemyController.OrientWeaponsTowards(m_EnemyController.KnownDetectedTarget.transform.position);
                     break;
                 case AIState.Attack:
-                    if (Vector3.Distance(m_EnemyController.KnownDetectedTarget.transform.position,
-                            m_EnemyController.DetectionModule.DetectionSourcePoint.position)
-                        >= (AttackStopDistanceRatio * m_EnemyController.DetectionModule.AttackRange))
-                    {
-                        m_EnemyController.SetNavDestination(m_EnemyController.KnownDetectedTarget.transform.position);
-                    }
-                    else
-                    {
-                        m_EnemyController.SetNavDestination(transform.position);
-                    }
+                    //if (Vector3.Distance(m_EnemyController.KnownDetectedTarget.transform.position,
+                    //        m_EnemyController.DetectionModule.DetectionSourcePoint.position)
+                    //    >= (AttackStopDistanceRatio * m_EnemyController.DetectionModule.AttackRange))
+                    //{
+                    //    m_EnemyController.SetNavDestination(m_EnemyController.KnownDetectedTarget.transform.position);
+                    //}
+                    //else
+                    //{
+                    //    m_EnemyController.SetNavDestination(transform.position);
+                    //}
 
-                    m_EnemyController.OrientTowards(m_EnemyController.KnownDetectedTarget.transform.position);
-                    m_EnemyController.TryAtack(m_EnemyController.KnownDetectedTarget.transform.position);
+                    //m_EnemyController.OrientTowards(m_EnemyController.KnownDetectedTarget.transform.position);
+                 //   m_EnemyController.TryAtack(m_EnemyController.KnownDetectedTarget.transform.position);
                     break;
             }
         }
